@@ -8,12 +8,14 @@ Created on Thu Mar 01 14:15:05 2018
 #AREA UNDER A CURVE
 import math as ma
 import numpy as np
+import numpy.random as rand
 import matplotlib
 import matplotlib.pyplot as plot
 
 """
 Initialization stuff
 """
+
 mst=4
 bst=9
 
@@ -51,8 +53,10 @@ print(parabola(0,10,5,6))
 
 num_steps=int(ma.ceil((end-start)/deltax))
 print(num_steps)
+
 """
 Computations
+"""
 """
 #midpoint sum
 straightcomp=0
@@ -75,13 +79,22 @@ print("We calculated an area under the curve of "+str(straightcomp)+ " for the s
 
 
 
+"""
 
 
 
+"""
+#Point filling for area calculation
+#==================================
+"""
+xdotfill=[]
+ydotfill=[]
 
+dotnum=100
 
+for n in range(dotnum):
+    xdotfill.append(np.random.randint(1,10))
+    ydotfill.append(np.random.randint(1,10))
 
-
-
-
-
+print xdotfill
+print ydotfill
