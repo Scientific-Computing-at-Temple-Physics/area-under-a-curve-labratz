@@ -63,11 +63,10 @@ straightcomp=0
 paracomp=0
 exponencomp=0
 for xpos in range(num_steps):
-    straightcomp=straightcomp+deltax*straight_line((xpos+(deltax/2)),mst,bst)
-    print(straight_line((xpos+(deltax/2)),mst,bst))
-    print(straightcomp)
-    paracomp=paracomp+deltax*parabola((xpos+(deltax/2)),apa,bpa,cpa)
-    exponencomp=exponencomp+deltax*exponential((xpos+(deltax/2)),aex,bex,cex)
+    current_x=start+deltax*xpos
+    straightcomp=straightcomp+deltax*straight_line((current_x+(deltax/2)),mst,bst)
+    paracomp=paracomp+deltax*parabola((current_x+(deltax/2)),apa,bpa,cpa)
+    exponencomp=exponencomp+deltax*exponential((current_x+(deltax/2)),aex,bex,cex)
 
 print("We calculated an area under the curve of "+str(straightcomp)+ " for the straight line, an area of "+str(paracomp)+" for the parabola, and an area of "+str(exponencomp)+" for the more complicated exponential function.")
 
