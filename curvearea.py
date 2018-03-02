@@ -27,7 +27,8 @@ aex=9
 bex=1.1
 cex=6
 
-deltax=float(raw_input("Please choose a value for delta x. This will determine how long the calculation takes, and how accurate it is. Delta x should be a float: "))
+deltax=.1
+#deltax=float(raw_input("Please choose a value for delta x. This will determine how long the calculation takes, and how accurate it is. Delta x should be a float: "))
 #inter=raw_input("Please choose an interval for this program to calculate area under. This should be formatted as '2,8', no space after the comma: ")
 #commaspot=inter.find(",")
 #if commaspot==-1:
@@ -49,10 +50,9 @@ def parabola(xp,ap,bp,cp):
 def exponential(xe,ae,be,ce):
     ye=(float(ae)*float(xe)+float(be))*ma.exp(-float(ce)*float(xe))
     return ye
-print(parabola(0,10,5,6))
 
 num_steps=int(ma.ceil((end-start)/deltax))
-print(num_steps)
+
 
 """
 Computations
@@ -86,14 +86,84 @@ print("We calculated an area under the curve of "+str(straightcomp)+ " for the s
 #Point filling for area calculation
 #==================================
 """
+np.random.seed(3)
+
+dotnum=10000
+
+#DEFINING LISTS
 xdotfill=[]
-ydotfill=[]
 
-dotnum=100
+ysdotfill=[]
+ypdotfill=[]
+yedotfill=[]
 
-for n in range(dotnum):
-    xdotfill.append(np.random.randint(1,10))
-    ydotfill.append(np.random.randint(1,10))
+ysheight_list=[]
+ypheight_list=[]
+yeheight_list=[]
 
-print xdotfill
-print ydotfill
+ysdifference=[]
+ypdifference=[]
+yedifference=[]
+
+#GENERATING X POINTS AND FINDING Y OF GENERATED X
+for dotspot1 in range(dotnum):
+    xdot=np.random.rand()+np.random.randint(start,end)
+    xdotfill.append(xdot)
+    
+    ysheight=straight_line(xdot,2,3)
+    ypheight=parabola(xdot,2,3,4)
+    yeheight=exponential(xdot,2,3,4)
+    
+    ysheight_list.append(ysheight)
+    ypheight_list.append(ypheight)
+    yeheight_list.append(yeheight)
+
+#FINDING MAX AND MINS OF FUNCTIONS
+maxys=max(ysheight_list)
+minys=min(ysheight_list)
+
+maxyp=max(ypheight_list)
+minyp=min(ypheight_list)
+
+maxye=max(yeheight_list)
+minye=min(yeheight_list)
+    
+#CREATING LIST OF RANDOM HEIGHTS IN RELATIVE GRAPH RANGE
+for dotspot2 in range(dotnum):
+    ysdotfill.append(np.random.rand()+np.random.randint(minys-minys*abs(2*np.std(minys)),maxys+maxys*abs(2*np.std(maxys))+1))
+    ypdotfill.append(np.random.rand()+np.random.randint(minyp-minyp*abs(2*np.std(minyp)),maxyp+maxyp*abs(2*np.std(maxyp))+1))
+    yedotfill.append(np.random.rand()+np.random.randint(minye-minye*abs(2*np.std(minye)),maxye+maxyp*abs(2*np.std(maxye))+1))
+
+#CALCULATING NUMBER OF POINTS BELOW CURVE
+belowpoints=0
+belowpointp=0
+belowpointe=0
+
+for dotspots in range(dotnum):
+    if abs(ysheight_list[dotspots])-abs(ysdotfill[dotspots])>=0:
+        belowpoints=belowpoints+1
+for dotspotp in range(dotnum):
+    if abs(ypheight_list[dotspotp])-abs(ypdotfill[dotspotp])>=0:
+        belowpointp=belowpointp+1
+for dotspote in range(dotnum):
+    if abs(yeheight_list[dotspote])-abs(yedotfill[dotspote])>=0:
+        belowpointe=belowpointe+1
+
+#RATIO OF POINTS BELOW CURVE
+ratios=float(belowpoints)/float(dotnum)
+ratiop=float(belowpointp)/float(dotnum)
+ratioe=float(belowpointe)/float(dotnum)
+
+print ratios, ratiop, ratioe
+
+#AREA OF SURVEYED GRAPH
+totareas=-(minys-minys*abs(2*np.std(minys))-(maxys+maxys*abs(2*np.std(maxys))+1))
+totareap=-(minyp-minyp*abs(2*np.std(minyp))-(maxyp+maxyp*abs(2*np.std(maxyp))+1))
+totareae=-(minye-minye*abs(2*np.std(minye))-(maxye+maxyp*abs(2*np.std(maxye))+1))
+
+#CALCULATING AREA OF CURVES
+dotareas=ratios*totareas
+dotareap=ratiop*totareap
+dotareae=ratioe*totareae
+
+print dotareas, dotareap, dotareae
