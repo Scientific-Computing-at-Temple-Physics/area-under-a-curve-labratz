@@ -8,7 +8,6 @@ Created on Thu Mar 01 14:15:05 2018
 #AREA UNDER A CURVE
 import math as ma
 import numpy as np
-import numpy.random as rand
 import matplotlib
 import matplotlib.pyplot as plot
 
@@ -101,9 +100,7 @@ print("Theoretically, the area under the straight line should be "+str(theory_st
 #==================================
 """
 
-np.random.seed(3)
-
-dotnum=10000
+dotnum=20000
 
 #DEFINING LISTS
 xdotfill=[]
@@ -120,18 +117,23 @@ ysdifference=[]
 ypdifference=[]
 yedifference=[]
 
+
 #GENERATING X POINTS AND FINDING Y OF GENERATED X
 for dotspot1 in range(dotnum):
     xdot=np.random.rand()+np.random.randint(start,end)
     xdotfill.append(xdot)
     
-    ysheight=straight_line(xdot,2,3)
-    ypheight=parabola(xdot,2,3,4)
-    yeheight=exponential(xdot,2,3,4)
+list.sort(xdotfill)
+
+for dotspot2 in range(dotnum):
+    ysheight=straight_line(xdotfill[dotspot2],mst,bst)
+    ypheight=parabola(xdotfill[dotspot2],apa,bpa,cpa)
+    yeheight=exponential(xdotfill[dotspot2],aex,bex,cex)
     
     ysheight_list.append(ysheight)
     ypheight_list.append(ypheight)
     yeheight_list.append(yeheight)
+
 
 #FINDING MAX AND MINS OF FUNCTIONS
 maxys=max(ysheight_list)
@@ -142,12 +144,45 @@ minyp=min(ypheight_list)
 
 maxye=max(yeheight_list)
 minye=min(yeheight_list)
-    
+
+ 
+#CREATING MAX AND MINS FOR GRAPHING DATA
+botrands=0
+toprands=maxys+maxys*abs(2*np.std(maxys))
+
+botrandp=0
+toprandp=maxyp+maxyp*abs(2*np.std(maxyp))
+
+botrande=0
+toprande=maxye+maxye*abs(2*np.std(maxye))
+
+
 #CREATING LIST OF RANDOM HEIGHTS IN RELATIVE GRAPH RANGE
-for dotspot2 in range(dotnum):
-    ysdotfill.append(np.random.rand()+np.random.randint(minys-minys*abs(2*np.std(minys)),maxys+maxys*abs(2*np.std(maxys))+1))
-    ypdotfill.append(np.random.rand()+np.random.randint(minyp-minyp*abs(2*np.std(minyp)),maxyp+maxyp*abs(2*np.std(maxyp))+1))
-    yedotfill.append(np.random.rand()+np.random.randint(minye-minye*abs(2*np.std(minye)),maxye+maxyp*abs(2*np.std(maxye))+1))
+for dotspot3 in range(dotnum):
+    ysdotfill.append(np.random.uniform(botrands,toprands))
+    ypdotfill.append(np.random.uniform(botrandp,toprandp))
+    yedotfill.append(np.random.uniform(botrande,toprande))
+
+
+#GRAPHING CURVES AND BELOW POINTS
+plot.figure("s")
+plot.plot(xdotfill,ysdotfill, marker='o', c='k', lw=0)
+plot.plot(xdotfill,ysheight_list, c='r')
+plot.title("line")
+plot.grid(True)
+
+plot.figure("p")
+plot.plot(xdotfill,ypdotfill, marker='o', c='k', lw=0)
+plot.plot(xdotfill,ypheight_list, c='r', lw=2)
+plot.title("parabola")
+plot.grid(True)
+
+plot.figure("e")
+plot.plot(xdotfill,yedotfill, marker='o', c='k', lw=0)
+plot.plot(xdotfill,yeheight_list, c='r')
+plot.title("exponential")
+plot.grid(True)
+
 
 #CALCULATING NUMBER OF POINTS BELOW CURVE
 belowpoints=0
@@ -164,17 +199,18 @@ for dotspote in range(dotnum):
     if abs(yeheight_list[dotspote])-abs(yedotfill[dotspote])>=0:
         belowpointe=belowpointe+1
 
+
 #RATIO OF POINTS BELOW CURVE
 ratios=float(belowpoints)/float(dotnum)
 ratiop=float(belowpointp)/float(dotnum)
 ratioe=float(belowpointe)/float(dotnum)
 
-print ratios, ratiop, ratioe
 
 #AREA OF SURVEYED GRAPH
-totareas=-(minys-minys*abs(2*np.std(minys))-(maxys+maxys*abs(2*np.std(maxys))+1))
-totareap=-(minyp-minyp*abs(2*np.std(minyp))-(maxyp+maxyp*abs(2*np.std(maxyp))+1))
-totareae=-(minye-minye*abs(2*np.std(minye))-(maxye+maxyp*abs(2*np.std(maxye))+1))
+totareas=(toprands-botrands)*(end-start)
+totareap=(toprandp-botrandp)*(end-start)
+totareae=(toprande-botrande)*(end-start)
+
 
 #CALCULATING AREA OF CURVES
 dotareas=ratios*totareas
