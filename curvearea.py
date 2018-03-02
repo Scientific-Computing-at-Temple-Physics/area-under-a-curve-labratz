@@ -57,7 +57,7 @@ num_steps=int(ma.ceil((end-start)/deltax))
 """
 Computations
 """
-"""
+
 #midpoint sum
 straightcomp=0
 paracomp=0
@@ -96,16 +96,11 @@ theory_exp=integrate_exp(end,aex,bex,cex)-integrate_exp(start,aex,bex,cex)
 print("Theoretically, the area under the straight line should be "+str(theory_str)+", the area under the parabola should be "+str(theory_para)+", and the area under the more complicated exponential curve should be " +str(theory_exp))
 
 
-
-
-"""
-
-
-
 """
 #Point filling for area calculation
 #==================================
 """
+
 np.random.seed(3)
 
 dotnum=10000
