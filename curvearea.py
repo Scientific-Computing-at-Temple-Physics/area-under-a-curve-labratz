@@ -67,7 +67,7 @@ for xpos in range(num_steps):
     paracomp=paracomp+deltax*parabola((current_x+(deltax/2)),apa,bpa,cpa)
     exponencomp=exponencomp+deltax*exponential((current_x+(deltax/2)),aex,bex,cex)
 
-print("We calculated an area under the curve of "+str(straightcomp)+ " for the straight line, an area of "+str(paracomp)+" for the parabola, and an area of "+str(exponencomp)+" for the more complicated exponential function.")
+print("We calculated an area under the curve of "+str(straightcomp)+ " for the straight line, an area of "+str(paracomp)+" for the parabola, and an area of "+str(exponencomp)+" for the more complicated exponential function using Riemann Sums.")
 
 #Integral based computation
 def integrate_straight(xs,ms,bs):
@@ -92,7 +92,7 @@ theory_str=integrate_straight(end,mst,bst)-integrate_straight(start,mst,bst)
 theory_para=integrate_para(end,apa,bpa,cpa)-integrate_para(start,apa,bpa,cpa)
 theory_exp=integrate_exp(end,aex,bex,cex)-integrate_exp(start,aex,bex,cex)
 
-print("Theoretically, the area under the straight line should be "+str(theory_str)+", the area under the parabola should be "+str(theory_para)+", and the area under the more complicated exponential curve should be " +str(theory_exp))
+print"\n", ("Theoretically, the area under the straight line should be "+str(theory_str)+", the area under the parabola should be "+str(theory_para)+", and the area under the more complicated exponential curve should be " +str(theory_exp))
 
 
 """
@@ -116,6 +116,13 @@ yeheight_list=[]
 ysdifference=[]
 ypdifference=[]
 yedifference=[]
+
+xsfunction=[]
+xpfunction=[]
+xefunction=[]
+ysfunction=[]
+ypfunction=[]
+yefunction=[]
 
 
 #GENERATING X POINTS AND FINDING Y OF GENERATED X
@@ -147,15 +154,26 @@ minye=min(yeheight_list)
 
  
 #CREATING MAX AND MINS FOR GRAPHING DATA
-botrands=0
+botrands=minys-minys*abs(2*np.std(minys))
 toprands=maxys+maxys*abs(2*np.std(maxys))
+if botrands>0:
+    botrands=0
+if toprands<0:
+    toprands=0
 
-botrandp=0
+botrandp=minyp-minyp*abs(2*np.std(minyp))
 toprandp=maxyp+maxyp*abs(2*np.std(maxyp))
+if botrandp>0:
+    botrandp=0
+if toprandp<0:
+    toprandp=0
 
-botrande=0
+botrande=minye-minye*abs(2*np.std(minye))
 toprande=maxye+maxye*abs(2*np.std(maxye))
-
+if botrande>0:
+    botrande=0
+if toprande<0:
+    toprande=0
 
 #CREATING LIST OF RANDOM HEIGHTS IN RELATIVE GRAPH RANGE
 for dotspot3 in range(dotnum):
@@ -164,22 +182,36 @@ for dotspot3 in range(dotnum):
     yedotfill.append(np.random.uniform(botrande,toprande))
 
 
+#CREATING GRAPH LISTS
+xcoord=start
+while start<=xcoord<=end:
+    xcoord=xcoord+.0001
+    
+    xsfunction.append(xcoord)
+    xpfunction.append(xcoord)
+    xefunction.append(xcoord)
+    
+    ysfunction.append(straight_line(xcoord,mst,bst))
+    ypfunction.append(parabola(xcoord,apa,bpa,cpa))
+    yefunction.append(exponential(xcoord,aex,bex,cex))
+
+
 #GRAPHING CURVES AND BELOW POINTS
 plot.figure("s")
 plot.plot(xdotfill,ysdotfill, marker='o', c='k', lw=0)
-plot.plot(xdotfill,ysheight_list, c='r')
+plot.plot(xsfunction,ysfunction, c='r')
 plot.title("line")
 plot.grid(True)
 
 plot.figure("p")
 plot.plot(xdotfill,ypdotfill, marker='o', c='k', lw=0)
-plot.plot(xdotfill,ypheight_list, c='r', lw=2)
+plot.plot(xpfunction,ypfunction, c='r', lw=2)
 plot.title("parabola")
 plot.grid(True)
 
 plot.figure("e")
 plot.plot(xdotfill,yedotfill, marker='o', c='k', lw=0)
-plot.plot(xdotfill,yeheight_list, c='r')
+plot.plot(xefunction,yefunction, c='r')
 plot.title("exponential")
 plot.grid(True)
 
@@ -190,14 +222,28 @@ belowpointp=0
 belowpointe=0
 
 for dotspots in range(dotnum):
-    if abs(ysheight_list[dotspots])-abs(ysdotfill[dotspots])>=0:
-        belowpoints=belowpoints+1
+    if ysheight_list[dotspots]>0:
+        if 0< ysdotfill[dotspots] <ysheight_list[dotspots]:
+            belowpoints=belowpoints+1
+    elif ysheight_list[dotspots]<0:
+        if ysheight_list[dotspots]< ysdotfill[dotspots]<0:
+            belowpoints=belowpoints-1
+
 for dotspotp in range(dotnum):
-    if abs(ypheight_list[dotspotp])-abs(ypdotfill[dotspotp])>=0:
-        belowpointp=belowpointp+1
+    if ypheight_list[dotspotp]>0:
+        if 0< ypdotfill[dotspotp] <ypheight_list[dotspotp]:
+            belowpointp=belowpointp+1
+    elif ypheight_list[dotspotp]<0:
+        if ypheight_list[dotspotp]< ypdotfill[dotspotp]<0:
+            belowpointp=belowpointp-1
+
 for dotspote in range(dotnum):
-    if abs(yeheight_list[dotspote])-abs(yedotfill[dotspote])>=0:
-        belowpointe=belowpointe+1
+    if yeheight_list[dotspote]>0:
+        if 0< yedotfill[dotspote] <yeheight_list[dotspote]:
+            belowpointe=belowpointe+1
+    elif yeheight_list[dotspote]<0:
+        if yeheight_list[dotspote]< yedotfill[dotspote]<0:
+            belowpointe=belowpointe-1
 
 
 #RATIO OF POINTS BELOW CURVE
@@ -217,4 +263,5 @@ dotareas=ratios*totareas
 dotareap=ratiop*totareap
 dotareae=ratioe*totareae
 
-print dotareas, dotareap, dotareae
+print"\n", ("Finally, we calculated an area under the curve of "+str(dotareas)+ " for the straight line, an area of "+str(dotareap)+" for the parabola, and an area of "+str(dotareae)+" for the more complicated exponential function by plotting " +str(dotnum)+ " random points, as shown below.")
+
