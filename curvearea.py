@@ -226,7 +226,7 @@ for dotspots in range(dotnum):
         if 0< ysdotfill[dotspots] <ysheight_list[dotspots]:
             belowpoints=belowpoints+1
     elif ysheight_list[dotspots]<0:
-        if ysheight_list[dotspots]< ysdotfill[dotspots]<0:
+        if ysheight_list[dotspots]< ysdotfill[dotspots] <0:
             belowpoints=belowpoints-1
 
 for dotspotp in range(dotnum):
@@ -234,7 +234,7 @@ for dotspotp in range(dotnum):
         if 0< ypdotfill[dotspotp] <ypheight_list[dotspotp]:
             belowpointp=belowpointp+1
     elif ypheight_list[dotspotp]<0:
-        if ypheight_list[dotspotp]< ypdotfill[dotspotp]<0:
+        if ypheight_list[dotspotp]< ypdotfill[dotspotp] <0:
             belowpointp=belowpointp-1
 
 for dotspote in range(dotnum):
@@ -242,7 +242,7 @@ for dotspote in range(dotnum):
         if 0< yedotfill[dotspote] <yeheight_list[dotspote]:
             belowpointe=belowpointe+1
     elif yeheight_list[dotspote]<0:
-        if yeheight_list[dotspote]< yedotfill[dotspote]<0:
+        if yeheight_list[dotspote]< yedotfill[dotspote] <0:
             belowpointe=belowpointe-1
 
 
